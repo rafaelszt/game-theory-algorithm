@@ -247,6 +247,8 @@ paket-files/
 # FAKE - F# Make
 .fake/
 
-# JetBrains Rider
+# JetBrains
 .idea/
 *.sln.iml
+cmake-build-debug/
+CMakeLists.txt
