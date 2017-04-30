@@ -3,11 +3,15 @@
 
 class Node {
     bool firstPlayer;
-
+    int value;
 public:
+
     Node(bool firstPlayer);
 
     bool isFirstPlayer() const;
+
+    int getValue() const;
+    void setValue(int value);
 };
 
 
