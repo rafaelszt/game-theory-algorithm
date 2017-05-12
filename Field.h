@@ -16,12 +16,13 @@ private:
     void setGameStatus();
     void setEmptyNodes();
 public:
-
     Field(int size);
     void setPlay(int x, int y, bool firstPlayer);
     int getTotalEmptyNodes();
-    int getGameStatus() const;
+    int getGameStatus();
     std::vector<std::pair<int, int>> *getEmptyNodes();
+
+    void printField();
 
 };
 
