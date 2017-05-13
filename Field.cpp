@@ -1,10 +1,15 @@
 #include <iostream>
 #include "Field.h"
 
+#define UNDEFINED -2
 #define DEFEAT -1
 #define ONGOING 0
 #define DRAW 1
 #define VICTORY 2
+
+#define CROSS 1
+#define CIRCLE 0
+#define UNSET -1
 
 Field::Field(int size) : size(size) {
     field = std::vector<std::vector<Node *>>();
@@ -59,46 +64,64 @@ int Field::getGameStatus() {
     return gameStatus;
 }
 
+
+std::vector<Node *> *Field::getColumnResult(int y) {
+    auto result = new std::vector<Node *>();
+
+    for (auto x = 0; x < size; ++x) {
+        result->push_back(field[x][y]);
+    }
+
+    return result;
+}
+
+std::vector<Node *> *Field::getLeftDiagonalResult() {
+    auto result = new std::vector<Node *>();
+    auto y = 0;
+
+    for (auto x = y; x < size; ++x, ++y) {
+        result->push_back(field[x][y]);
+    }
+
+    return result;
+}
+
+std::vector<Node *> *Field::getRightDiagonalResult() {
+    auto result = new std::vector<Node *>();
+
+    for (auto x = 0; x < size; ++x) {
+        result->push_back(field[x][size - 1 - x]);
+    }
+
+    return result;
+}
+
 void Field::setGameStatus() {
-    auto draw = true;
+    gameStatus = DRAW;
 
-    for (auto i = 0; i < size; ++i) {
-        auto circle = false;
-        auto cross = false;
-        for (auto j = 0; j < size; ++j) {
+    auto lineResults = new std::vector<std::vector<Node *>*>();
 
-            // Nenhuma jogada no local
-            if (field[i][j] == nullptr) {
-                draw = false;
-                break;
-            }
-            if (field[i][j]->isFirstPlayer()) {
-                circle = true;
-            }
-            else {
-                cross = true;
-            }
+    lineResults->push_back(getLeftDiagonalResult());
+    lineResults->push_back(getRightDiagonalResult());
 
-            if (circle && cross) {
-                break;
-            }
-        }
+    for (auto y = 0; y < size; ++y) {
+        // Coloca a linha no resultado
+        lineResults->push_back(&field[y]);
 
-        if (circle && !cross) {
-            gameStatus = VICTORY;
-            return;
-        }
-        else if (cross && !circle) {
-            gameStatus = DEFEAT;
-            return;
-        }
+        lineResults->push_back(getColumnResult(y));
     }
 
-    if (draw) {
-        gameStatus = DRAW;
-    }
-    else {
-        gameStatus = ONGOING;
+    for (auto itResult = lineResults->begin(); itResult != lineResults->end(); ++itResult) {
+        auto result = getLineResult(**itResult);
+
+        if (result == VICTORY || result == DEFEAT) {
+            gameStatus = result;
+
+            return;
+        }
+        else if (result == ONGOING) {
+            gameStatus = result;
+        }
     }
 
 }
@@ -121,4 +144,36 @@ void Field::printField() {
     }
     std::cout << "Resultado: " << getGameStatus() << std::endl << std::endl;
 
+}
+
+int Field::getLineResult(std::vector<Node *> line) {
+    int previousPlay = UNSET;
+    int result = UNDEFINED;
+
+    for (auto play = line.cbegin(); play != line.cend(); ++play) {
+            // Se encontrar um vazio continua o jogo
+        if (*play == nullptr) {
+            result = ONGOING;
+            break;
+        }
+        else if (previousPlay == UNSET) {
+            previousPlay = (*play)->isFirstPlayer() ?
+                           CIRCLE : CROSS;
+        }
+        else {
+            auto curPlay = (*play)->isFirstPlayer() ?
+                           CIRCLE : CROSS;
+            if (previousPlay != curPlay) {
+                result = DRAW;
+            }
+        }
+    }
+
+    if (result == DRAW || result == ONGOING) {
+        return result;
+    }
+
+    //Verifica qual jogada estava sendo feita
+    return previousPlay == CIRCLE ?
+            VICTORY : DEFEAT;
 }

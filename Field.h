@@ -15,6 +15,12 @@ private:
 
     void setGameStatus();
     void setEmptyNodes();
+
+    std::vector<Node *> *getColumnResult(int y);
+    std::vector<Node *> *getLeftDiagonalResult();
+    std::vector<Node *> *getRightDiagonalResult();
+
+    int getLineResult(std::vector<Node *> line);
 public:
     Field(int size);
     void setPlay(int x, int y, bool firstPlayer);
