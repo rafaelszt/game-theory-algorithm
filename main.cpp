@@ -11,8 +11,8 @@ int main()
     auto minimax = new Minimax();
 
     auto depth = 9;
-    auto maximizingPlayer = !true;
-    auto firstPlayer = !true;
+    auto maximizingPlayer = true;
+    auto firstPlayer = true;
 
     while(field->getGameStatus() == 0) {
         auto play = *minimax->execute(field, depth, maximizingPlayer, firstPlayer);
