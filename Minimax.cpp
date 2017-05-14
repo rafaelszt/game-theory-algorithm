@@ -19,7 +19,9 @@ statusCoordinate Minimax::execute(Field *field, int depth, bool maximizingPlayer
     if (depth == 0 or field->getGameStatus() != 0) {
         auto lastPlay = field->getLastPlay();
         return new std::pair<int, std::pair<int, int>>(
-                field->getGameStatus(),
+                field->getGameStatus() + getBoardPoint(
+                        lastPlay.second.first, lastPlay.second.first
+                ),
                 std::make_pair(lastPlay.second.first, lastPlay.second.second));
     }
 
@@ -36,7 +38,6 @@ statusCoordinate Minimax::execute(Field *field, int depth, bool maximizingPlayer
         bestValue = maximizingPlayer ?
                     maximumValue(bestValue, v) :
                     minimumValue(bestValue, v);
-
     }
 
     return bestValue;
@@ -48,4 +49,15 @@ statusCoordinate Minimax::minimumValue(statusCoordinate a, statusCoordinate b) {
 
 statusCoordinate Minimax::maximumValue(statusCoordinate a, statusCoordinate b) {
     return b->first > a->first ? b : a;
+}
+
+int Minimax::getBoardPoint(int x, int y) {
+    if ((x == 2 || x == 0) && (y == 2 || y == 0)) {
+        return 6;
+    }
+    else if (x == 1 && y == 1) {
+        return 8;
+    }
+
+    return 4;
 }

@@ -13,6 +13,8 @@ private:
     statusCoordinate minimumValue(statusCoordinate a, statusCoordinate b);
     statusCoordinate maximumValue(statusCoordinate a, statusCoordinate b);
 
+    int getBoardPoint(int x, int y);
+
 public:
     statusCoordinate execute(Field *field, int depth, bool maximizingPlayer, bool firstPlayer);
 
