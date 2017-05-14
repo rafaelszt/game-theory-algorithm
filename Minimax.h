@@ -4,14 +4,17 @@
 #include "Field.h"
 #include <cmath>
 
+using statusCoordinate = std::pair<int, std::pair<int, int>>*;
+
 class Minimax {
 private:
     std::vector<Field *> *generatePossiblePlays(Field *f, bool firstPlayer);
-    int minimumValue(int a, int b);
-    int maximumValue(int a, int b);
+
+    statusCoordinate minimumValue(statusCoordinate a, statusCoordinate b);
+    statusCoordinate maximumValue(statusCoordinate a, statusCoordinate b);
 
 public:
-    int execute(Field *field, int depth, bool maximizingPlayer, bool firstPlayer);
+    statusCoordinate execute(Field *field, int depth, bool maximizingPlayer, bool firstPlayer);
 
 };
 

@@ -5,36 +5,47 @@ std::vector<Field *> *Minimax::generatePossiblePlays(Field *f, bool firstPlayer)
     auto emptyNodes = f->getEmptyNodes();
 
     for (auto it = emptyNodes->begin(); it != emptyNodes->end(); ++it) {
-        auto field = f;
+        auto field = new Field(*f);
+
         field->setPlay(it->first, it->second, firstPlayer);
+
         possiblePlays->push_back(field);
     }
 
     return possiblePlays;
 }
 
-int Minimax::execute(Field *field, int depth, bool maximizingPlayer, bool firstPlayer) {
+statusCoordinate Minimax::execute(Field *field, int depth, bool maximizingPlayer, bool firstPlayer) {
     if (depth == 0 or field->getGameStatus() != 0) {
-        return field->getGameStatus();
+        auto lastPlay = field->getLastPlay();
+        return new std::pair<int, std::pair<int, int>>(
+                field->getGameStatus(),
+                std::make_pair(lastPlay.second.first, lastPlay.second.second));
     }
 
-    auto bestValue = maximizingPlayer ? -INFINITY : INFINITY;
+    auto bestValue = new std::pair<int, std::pair<int, int>>(
+            maximizingPlayer ? -INFINITY : INFINITY,
+            std::make_pair(-1, -1));
+
     auto plays = generatePossiblePlays(field, firstPlayer);
 
     for (auto it = plays->begin(); it != plays->end(); ++it) {
-        auto v = execute(*it, depth - 1, !maximizingPlayer, !firstPlayer);
+        auto b = new Minimax();
+        auto v = b->execute(*it, depth - 1, !maximizingPlayer, !firstPlayer);
+
         bestValue = maximizingPlayer ?
                     maximumValue(bestValue, v) :
                     minimumValue(bestValue, v);
+
     }
 
     return bestValue;
 }
 
-int Minimax::minimumValue(int a, int b) {
-    return a > b ? a : b;
+statusCoordinate Minimax::minimumValue(statusCoordinate a, statusCoordinate b) {
+    return a->first > b->first ? a : b;
 }
 
-int Minimax::maximumValue(int a, int b) {
-    return b > a ? b : a;
+statusCoordinate Minimax::maximumValue(statusCoordinate a, statusCoordinate b) {
+    return b->first > a->first ? b : a;
 }
