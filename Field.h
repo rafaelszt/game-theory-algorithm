@@ -24,7 +24,7 @@ private:
     int getLineResult(std::vector<Node *> line);
 public:
     Field(int size);
-    void setPlay(int x, int y, bool firstPlayer);
+    bool setPlay(int x, int y, bool firstPlayer);
     int getTotalEmptyNodes();
     int getGameStatus();
     std::vector<std::pair<int, int>> *getEmptyNodes();

@@ -24,9 +24,15 @@ Field::Field(int size) : size(size) {
     }
 }
 
-void Field::setPlay(int x, int y, bool firstPlayer) {
+bool Field::setPlay(int x, int y, bool firstPlayer) {
     lastPlay = std::make_pair(firstPlayer, std::make_pair(x, y));
-    field[x][y] = new Node(firstPlayer);
+
+    if (field[x][y] == nullptr) {
+        field[x][y] = new Node(firstPlayer);
+        return true;
+    }
+
+    return false;
 }
 
 int Field::getTotalEmptyNodes() {
