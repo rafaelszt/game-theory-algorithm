@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include "Field.h"
 
 #define UNDEFINED -2
@@ -24,6 +25,7 @@ Field::Field(int size) : size(size) {
 }
 
 void Field::setPlay(int x, int y, bool firstPlayer) {
+    lastPlay = std::make_pair(firstPlayer, std::make_pair(x, y));
     field[x][y] = new Node(firstPlayer);
 }
 
@@ -33,13 +35,12 @@ int Field::getTotalEmptyNodes() {
 }
 
 void Field::setEmptyNodes() {
-    totalEmptyNodes = 0;
+    totalEmptyNodes = 9;
 
     for (auto x = 0; x < size; ++x) {
         for (auto y = 0; y < size; ++y) {
-            if (field[x][y] == nullptr)
-            {
-                totalEmptyNodes++;
+            if (field[x][y] == nullptr) {
+                totalEmptyNodes--;
             }
         }
     }
@@ -126,26 +127,6 @@ void Field::setGameStatus() {
 
 }
 
-void Field::printField() {
-    for (auto x = 0; x < size; ++x) {
-        std::cout << "|";
-        for (auto y = 0; y < size; ++y) {
-            if (field[x][y] == nullptr) {
-                std::cout << " _ |";
-            }
-            else if (field[x][y]->isFirstPlayer()) {
-                std::cout << " O |";
-            }
-            else {
-                std::cout << " X |";
-            }
-        }
-        std::cout << std::endl;
-    }
-    std::cout << "Resultado: " << getGameStatus() << std::endl << std::endl;
-
-}
-
 int Field::getLineResult(std::vector<Node *> line) {
     int previousPlay = UNSET;
     int result = UNDEFINED;
@@ -176,4 +157,55 @@ int Field::getLineResult(std::vector<Node *> line) {
     //Verifica qual jogada estava sendo feita
     return previousPlay == CIRCLE ?
             VICTORY : DEFEAT;
+}
+
+int Field::getSize() const {
+    return size;
+}
+
+void Field::saveFieldToFile() {
+    std::ofstream file;
+    file.open("output.txt", std::ofstream::out | std::ofstream::app);
+
+    for (auto x = 0; x < size; ++x) {
+        file << "|";
+        for (auto y = 0; y < size; ++y) {
+            if (field[x][y] == nullptr) {
+                file << " _ |";
+            }
+            else if (field[x][y]->isFirstPlayer()) {
+                file << " O |";
+            }
+            else {
+                file << " X |";
+            }
+        }
+        file << std::endl;
+    }
+    file << "Resultado: " << getGameStatus() << std::endl << std::endl;
+
+}
+
+void Field::printField() {
+    for (auto x = 0; x < size; ++x) {
+        std::cout << "|";
+        for (auto y = 0; y < size; ++y) {
+            if (field[x][y] == nullptr) {
+                std::cout << " _ |";
+            }
+            else if (field[x][y]->isFirstPlayer()) {
+                std::cout << " O |";
+            }
+            else {
+                std::cout << " X |";
+            }
+        }
+        std::cout << std::endl;
+    }
+    std::cout << "Resultado: " << getGameStatus() << std::endl << std::endl;
+
+}
+
+const std::pair<bool, std::pair<int, int>> &Field::getLastPlay() const {
+    return lastPlay;
 }

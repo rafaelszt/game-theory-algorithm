@@ -10,7 +10,21 @@ int main()
 
     auto minimax = new Minimax();
 
-    std::cout << minimax->execute(field, 9, true, true);
+    auto depth = 9;
+    auto maximizingPlayer = !true;
+    auto firstPlayer = !true;
+
+    while(field->getGameStatus() == 0) {
+        auto play = *minimax->execute(field, depth, maximizingPlayer, firstPlayer);
+        field->setPlay(play.second.first, play.second.second, firstPlayer);
+
+        field->printField();
+
+        depth--;
+        maximizingPlayer = !maximizingPlayer;
+        firstPlayer = !firstPlayer;
+    }
+
 
     return 0;
 }
