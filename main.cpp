@@ -1,6 +1,6 @@
 #include <iostream>
-#include "Minimax.h"
 #include "Field.h"
+#include "Minimax.h"
 
 void makePlay(Field *f, bool firstPlayer) {
     std::cout << "X: ";
