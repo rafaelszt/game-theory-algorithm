@@ -23,6 +23,7 @@ statusCoordinate AlphaBeta::execute(Field *field, int depth, int alpha, int beta
                 maximumValue(alpha, bestValue->first) :
                 minimumValue(beta, bestValue->first);
 
+        Field::incrementExpanded();
         if (alpha > beta) {
             break;
         }

@@ -19,6 +19,8 @@ statusCoordinate Minimax::execute(Field *field, int depth, bool maximizingPlayer
         bestValue = maximizingPlayer ?
                     maximumValue(bestValue, v) :
                     minimumValue(bestValue, v);
+
+        Field::incrementExpanded();
     }
 
     return bestValue;

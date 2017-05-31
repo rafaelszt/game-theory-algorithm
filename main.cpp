@@ -1,6 +1,7 @@
 #include <iostream>
 #include "Field.h"
 #include "Minimax.h"
+#include "AlphaBeta.h"
 
 void makePlay(Field *f, bool firstPlayer) {
     std::cout << "X: ";
@@ -24,7 +25,7 @@ int main()
 
     field->printField();
 
-    auto minimax = new Minimax();
+    auto minimax = new AlphaBeta();
 
     auto depth = 9;
     auto maximizingPlayer = true;

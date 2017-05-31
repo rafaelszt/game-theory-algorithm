@@ -12,6 +12,8 @@
 #define CIRCLE 0
 #define UNSET -1
 
+int Field::expanded = 0;
+
 Field::Field(int size) : size(size) {
     field = std::vector<std::vector<Node *>>();
 
@@ -208,10 +210,16 @@ void Field::printField() {
         }
         std::cout << std::endl;
     }
-    std::cout << "Resultado: " << getGameStatus() << std::endl << std::endl;
+    std::cout << "Resultado: " << getGameStatus() << std::endl;
+    std::cout << "Expandidos: " << expanded << std::endl << std::endl;
+    expanded = 0;
 
 }
 
 const std::pair<bool, std::pair<int, int>> &Field::getLastPlay() const {
     return lastPlay;
+}
+
+int Field::incrementExpanded() {
+    return ++expanded;
 }

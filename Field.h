@@ -12,6 +12,7 @@ private:
     nodeMatrix field;
     int totalEmptyNodes;
     int gameStatus;
+    static int expanded;
     std::pair<bool, std::pair<int, int>> lastPlay;
 
     void setGameStatus();
@@ -33,6 +34,7 @@ public:
     void printField();
 
     int getSize() const;
+    static int incrementExpanded();
     const std::pair<bool, std::pair<int, int>> &getLastPlay() const;
 
 };
