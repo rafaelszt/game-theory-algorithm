@@ -4,7 +4,7 @@
 #include "Field.h"
 #include <cmath>
 
-using statusCoordinate = std::pair<int, std::pair<int, int>>*;
+using statusCoordinate = std::pair<int, std::pair<int, int>>;
 
 class SearchAlgorithm {
 protected:
@@ -13,7 +13,6 @@ protected:
     statusCoordinate minimumValue(statusCoordinate a, statusCoordinate b);
     statusCoordinate maximumValue(statusCoordinate a, statusCoordinate b);
     statusCoordinate getHeuristicValue(Field *field);
-    int getBoardPoint(int x, int y);
 
 public:
     virtual statusCoordinate execute(Field *field, int depth, bool maximizingPlayer, bool firstPlayer) = 0;

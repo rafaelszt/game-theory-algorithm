@@ -1,12 +1,14 @@
+#include <iostream>
 #include "AlphaBeta.h"
 
-statusCoordinate AlphaBeta::execute(Field *field, int depth, int alpha, int beta, bool maximizingPlayer, bool firstPlayer) {
-    if (depth == 0 or field->getGameStatus() != 0) {
+statusCoordinate
+AlphaBeta::execute(Field *field, int depth, int alpha, int beta, bool maximizingPlayer, bool firstPlayer) {
+    if (depth == 0 || field->getGameStatus() != 0) {
         return getHeuristicValue(field);
     }
 
-    auto bestValue = new std::pair<int, std::pair<int, int>>(
-            maximizingPlayer ? -INFINITY : INFINITY,
+    auto bestValue = std::make_pair(
+            maximizingPlayer ? -999999999 : 999999999,
             std::make_pair(-1, -1));
 
     auto plays = generatePossiblePlays(field, firstPlayer);
@@ -20,13 +22,17 @@ statusCoordinate AlphaBeta::execute(Field *field, int depth, int alpha, int beta
                     SearchAlgorithm::minimumValue(bestValue, v);
 
         alpha = maximizingPlayer ?
-                maximumValue(alpha, bestValue->first) :
-                minimumValue(beta, bestValue->first);
+                maximumValue(alpha, bestValue.first) :
+                minimumValue(beta, bestValue.first);
+
+        Field::incrementExpanded();
 
         if (alpha > beta) {
             break;
         }
     }
+
+
 
     return bestValue;
 }

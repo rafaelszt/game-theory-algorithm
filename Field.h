@@ -5,35 +5,40 @@
 #include "Node.h"
 
 using nodeMatrix = std::vector<std::vector<Node *>>;
+using play = std::pair<int, std::pair<int, int>>;
 
 class Field {
 private:
     int size;
     nodeMatrix field;
-    int totalEmptyNodes;
     int gameStatus;
-    std::pair<bool, std::pair<int, int>> lastPlay;
+    static int expanded;
+    play playMade;
 
     void setGameStatus();
-    void setEmptyNodes();
 
     std::vector<Node *> *getColumnResult(int y);
     std::vector<Node *> *getLeftDiagonalResult();
     std::vector<Node *> *getRightDiagonalResult();
 
     int getLineResult(std::vector<Node *> line);
+
+    std::vector<std::vector<Node *>*> *getMatrixAsVector();
 public:
     Field(int size);
+
     bool setPlay(int x, int y, bool firstPlayer);
-    int getTotalEmptyNodes();
     int getGameStatus();
     std::vector<std::pair<int, int>> *getEmptyNodes();
 
-    void saveFieldToFile();
     void printField();
 
-    int getSize() const;
-    const std::pair<bool, std::pair<int, int>> &getLastPlay() const;
+    static int incrementExpanded();
+    play getPlayMade() const;
+
+    void resetPlayMade();
+
+    int totalWinPossibilities();
 
 };
 
