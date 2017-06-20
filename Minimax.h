@@ -4,7 +4,7 @@
 #include "SearchAlgorithm.h"
 #include "Field.h"
 
-using statusCoordinate = std::pair<int, std::pair<int, int>>*;
+using statusCoordinate = std::pair<int, std::pair<int, int>>;
 
 class Minimax: public SearchAlgorithm {
 public:

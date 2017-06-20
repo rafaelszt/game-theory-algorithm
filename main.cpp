@@ -12,6 +12,7 @@ void makePlay(Field *f, bool firstPlayer) {
     auto y = 0;
     std::cin >> y;
 
+    auto rp = std::make_pair(-1, std::make_pair(-1, -1));
     auto success = f->setPlay(x, y, firstPlayer);
 
     if (!success) {
@@ -21,11 +22,21 @@ void makePlay(Field *f, bool firstPlayer) {
 
 int main()
 {
+    auto mx = 'y';
+    std::cout << "Minimax? (y/n) ";
+    std::cin >> mx;
+
+    SearchAlgorithm *search_algorithm = new AlphaBeta();
+
+    if (mx == 'y') {
+        search_algorithm = new Minimax();
+    }
+
+    std::cin.clear();
+
     auto field = new Field(3);
 
     field->printField();
-
-    auto minimax = new AlphaBeta();
 
     auto depth = 9;
     auto maximizingPlayer = true;
@@ -36,8 +47,13 @@ int main()
             makePlay(field, true);
         }
         else {
-            auto play = *minimax->execute(field, depth, maximizingPlayer, firstPlayer);
+            auto play = search_algorithm->execute(
+                    field, depth, maximizingPlayer, firstPlayer);
+
+            // Efetua a jogada do computador
             field->setPlay(play.second.first, play.second.second, firstPlayer);
+
+            field->resetPlayMade();
         }
 
         field->printField();
