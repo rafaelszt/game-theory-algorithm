@@ -1,5 +1,8 @@
 # Game Theory
 
+AI that plays tic-tac-toe, doesn't always wins, but it should, so a few bugs are there.
+
+
 ## Minimax Algorithm
 
 #### Pseudocode
